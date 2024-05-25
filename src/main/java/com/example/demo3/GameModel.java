@@ -23,6 +23,7 @@ public class GameModel {
     }
 
     public boolean isValidMove(int row, int col) {
+
         if (row < 0 || row >= boardSize || col < 0 || col >= boardSize) {
             return false; // Tahta sınırları dışında
         }

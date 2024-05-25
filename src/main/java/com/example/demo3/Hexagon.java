@@ -1,9 +1,9 @@
 package com.example.demo3;
-
-import javafx.scene.input.MouseEvent;
+import javafx.scene.shape.Line;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
+
 
 public class Hexagon extends StackPane {
     private static final double SIZE = 30; // Altıgen boyutu (ihtiyaca göre ayarlayın)
@@ -11,18 +11,21 @@ public class Hexagon extends StackPane {
     private int col;
     private Player owner;
     private Polygon hexagonShape;
+    private GameModel model;
+    private double[] points;
 
-    public Hexagon(int row, int col, double hexagonRadius) {
+    public Hexagon(int row, int col, double hexagonRadius, GameModel model) {
+        this.model = model;
         this.row = row;
         this.col = col;
         this.owner = null; // Başlangıçta sahipsiz
         createHexagonShape(); // Altıgen şeklini oluştur
         getChildren().add(hexagonShape); // Şekli StackPane'e ekle
-        setOnMouseClicked(this::handleMouseClick); // Tıklama olay işleyicisi ekle
+
     }
 
     private void createHexagonShape() {
-        double[] points = new double[12]; // 6 köşe, her biri için 2 koordinat (x, y)
+        points = new double[12]; // 6 köşe, her biri için 2 koordinat (x, y)
         for (int i = 0; i < 6; i++) {
             double angle = 2 * Math.PI / 6 * (i + 0.5);
             points[2 * i] = SIZE * Math.cos(angle);
@@ -30,13 +33,7 @@ public class Hexagon extends StackPane {
         }
         hexagonShape = new Polygon(points);
         hexagonShape.setFill(Color.LIGHTGRAY); // Başlangıç dolgu rengi
-        hexagonShape.setStroke(Color.BLACK); // Kenarlık rengi
-    }
-
-    private void handleMouseClick(MouseEvent event) {
-        // GameController'a tıklama olayı hakkında bilgi ver
-        // Örnek:
-        // GameController.getInstance().handleHexagonClick(this);
+        hexagonShape.setStroke(Color.BLACK);
     }
 
     public void setOwner(Player owner) {
@@ -52,6 +49,62 @@ public class Hexagon extends StackPane {
         } else {
             hexagonShape.setFill(Color.LIGHTGRAY); // Sahipsiz ise gri yap
         }
+    }
+
+    public void paintEdge(int edgeIndex, Color color) {
+        if (edgeIndex < 0 || edgeIndex >= 6) {
+            throw new IllegalArgumentException("Edge index must be between 0 and 5");
+        }
+        double startX = points[2 * edgeIndex];
+        double startY = points[2 * edgeIndex + 1];
+        double endX = points[2 * ((edgeIndex + 1) % 6)];
+        double endY = points[2 * ((edgeIndex + 1) % 6) + 1];
+        Line edge = new Line(startX, startY, endX, endY);
+        edge.setStroke(color);
+        edge.setStrokeWidth(3); // Set the width of the edge line
+        getChildren().add(edge); // Add the edge line to the StackPane
+
+        if(row==0){
+            if(edgeIndex==1){
+                edge.setTranslateX(hexagonShape.getLayoutBounds().getWidth() / 5);
+                edge.setTranslateY(hexagonShape.getLayoutBounds().getHeight() / -2.6);
+
+            } else if (edgeIndex==0) {
+                edge.setTranslateX(hexagonShape.getLayoutBounds().getWidth() / -5);
+                edge.setTranslateY(hexagonShape.getLayoutBounds().getHeight() / -2.6);
+            }
+
+        }
+        else if(row==model.getBoardSize()-1){
+            if(edgeIndex==1){
+                edge.setTranslateX(hexagonShape.getLayoutBounds().getWidth() / -5);
+                edge.setTranslateY(hexagonShape.getLayoutBounds().getHeight() / 2.6);
+            } else if (edgeIndex==0) {
+                edge.setTranslateX(hexagonShape.getLayoutBounds().getWidth() / 5);
+                edge.setTranslateY(hexagonShape.getLayoutBounds().getHeight() / 2.6);
+            }
+        }
+        if(col==0){
+            if(edgeIndex==2){
+                edge.setTranslateX(hexagonShape.getLayoutBounds().getWidth() / -2);
+                edge.setTranslateY(hexagonShape.getLayoutBounds().getHeight() / 20);
+
+            } else if (edgeIndex==4) {
+                edge.setTranslateX(hexagonShape.getLayoutBounds().getWidth() / -5);
+                edge.setTranslateY(hexagonShape.getLayoutBounds().getHeight() / 2.6);
+            }
+
+        }
+        else if(col==model.getBoardSize()-1){
+            if(edgeIndex==2){
+                edge.setTranslateX(hexagonShape.getLayoutBounds().getWidth() / 2);
+                edge.setTranslateY(hexagonShape.getLayoutBounds().getHeight() / 20);
+            } else if (edgeIndex==4) {
+                edge.setTranslateX(hexagonShape.getLayoutBounds().getWidth() / 5);
+                edge.setTranslateY(hexagonShape.getLayoutBounds().getHeight() / -2.6);
+            }
+        }
+
     }
 
     public int getRow() {

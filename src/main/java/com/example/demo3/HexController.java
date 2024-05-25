@@ -37,7 +37,7 @@ public class HexController {
         int col = hexagon.getCol();
 
         if (model.isValidMove(row, col)) {
-            model.makeMove(hexagon.getRow(), hexagon.getCol());
+            model.makeMove(row, col);
             view.updateView(); // Görünümü güncelle
 
             if (model.checkWinCondition(model.getCurrentPlayer())) {
@@ -50,7 +50,7 @@ public class HexController {
                 model.resetGame();
                 view.updateView();
                 updateTurnInfo();
-            } else {
+            }else {
                 // Oyun devam ediyor, oyuncu bilgilerini güncelle
                 updateTurnInfo();
             }

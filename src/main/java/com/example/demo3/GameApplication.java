@@ -22,7 +22,7 @@ public class GameApplication {
         turnLabel = new Label("Turn: RED");
         redMovesLabel = new Label("RED: 0");
         blueMovesLabel = new Label("BLUE: 0");
-        Button startButton = new Button("Start Game");
+        Button startButton = new Button("Reset Game");
         startButton.setOnAction(event -> gameController.handleStartButtonClick());
         // Tahta boyutu seçimi için radyo düğmeleri
         ToggleGroup sizeGroup = new ToggleGroup();
@@ -54,7 +54,7 @@ public class GameApplication {
 
         Stage newStage = new Stage();
         newStage.setTitle("HexGame v0.1");
-        Scene scene = new Scene(root, 600, 400);
+        Scene scene = new Scene(root, 1500, 1000);
         newStage.setScene(scene);
         newStage.show();
     }
