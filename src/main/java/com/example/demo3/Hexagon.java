@@ -36,11 +36,6 @@ public class Hexagon extends StackPane {
         hexagonShape.setStroke(Color.BLACK);
     }
 
-    public void setOwner(Player owner) {
-        this.owner = owner;
-        updateAppearance(); // Görünümü sahibine göre güncelle
-    }
-
     private void updateAppearance() {
         if (owner == Player.RED) {
             hexagonShape.setFill(Color.RED);
@@ -49,6 +44,11 @@ public class Hexagon extends StackPane {
         } else {
             hexagonShape.setFill(Color.LIGHTGRAY); // Sahipsiz ise gri yap
         }
+    }
+
+    public void setOwner(Player owner) {
+        this.owner = owner;
+        updateAppearance(); // Görünümü sahibine göre güncelle
     }
 
     public void paintEdge(int edgeIndex, Color color) {
@@ -61,8 +61,8 @@ public class Hexagon extends StackPane {
         double endY = points[2 * ((edgeIndex + 1) % 6) + 1];
         Line edge = new Line(startX, startY, endX, endY);
         edge.setStroke(color);
-        edge.setStrokeWidth(3); // Set the width of the edge line
-        getChildren().add(edge); // Add the edge line to the StackPane
+        edge.setStrokeWidth(3); // Kenarın kalınlığını belirleme
+        getChildren().add(edge); // StackPane e ekleme
 
         if(row==0){
             if(edgeIndex==1){
@@ -111,17 +111,10 @@ public class Hexagon extends StackPane {
         return row;
     }
 
-    public void setRow(int row) {
-        this.row = row;
-    }
-
     public int getCol() {
         return col;
     }
 
-    public void setCol(int col) {
-        this.col = col;
-    }
 
     // İhtiyaç duyulursa row, col ve owner için getter metotları eklenebilir
 }

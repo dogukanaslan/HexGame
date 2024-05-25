@@ -23,12 +23,13 @@ public class BoardView extends Pane {
         for (int row = 0; row < model.getBoardSize(); row++) {
             for (int col = 0; col < model.getBoardSize(); col++) {
                 Hexagon hexagon = new Hexagon(row, col, hexagonRadius,model);
+                if (col==0|| col==model.getBoardSize()-1) {
+                    hexagon.paintEdge(2, Color.RED);
+                    hexagon.paintEdge(4, Color.RED);
+                }
                 if(row==0|| row==model.getBoardSize()-1){
                     hexagon.paintEdge(1, Color.BLUE);
                     hexagon.paintEdge(0, Color.BLUE);
-                } else if (col==0|| col==model.getBoardSize()-1) {
-                    hexagon.paintEdge(2, Color.RED);
-                    hexagon.paintEdge(4, Color.RED);
                 }
                 hexagons[row][col] = hexagon;
 
@@ -48,8 +49,6 @@ public class BoardView extends Pane {
             }
         }
 
-        // Kenar boşluklarını ayarla (ihtiyaca göre)
-        setPadding(new Insets(hexagonRadius * 2));
     }
 
     public void updateView() {
@@ -64,8 +63,4 @@ public class BoardView extends Pane {
         return hexagons;
     }
 
-    public void setHexagons(Hexagon[][] hexagons) {
-        this.hexagons = hexagons;
-
-    }
 }

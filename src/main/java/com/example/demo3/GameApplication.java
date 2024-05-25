@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 public class GameApplication {
     private GameModel gameModel;
     private BoardView boardView;
-    private HexController gameController;
+    private GameController gameController;
     private BorderPane root; // root'u bir instance değişkeni yapın
     private Label turnLabel;
     private Label redMovesLabel;
@@ -22,8 +22,8 @@ public class GameApplication {
         turnLabel = new Label("Turn: RED");
         redMovesLabel = new Label("RED: 0");
         blueMovesLabel = new Label("BLUE: 0");
-        Button startButton = new Button("Reset Game");
-        startButton.setOnAction(event -> gameController.handleStartButtonClick());
+        Button resetButton = new Button("Reset Game");
+        resetButton.setOnAction(event -> gameController.handleResetButtonClick());
         // Tahta boyutu seçimi için radyo düğmeleri
         ToggleGroup sizeGroup = new ToggleGroup();
         RadioButton rb5x5 = new RadioButton("5x5");
@@ -42,7 +42,7 @@ public class GameApplication {
         rb17x17.setOnAction(e -> createGame(17));
 
         // Düzen
-        HBox sizeOptions = new HBox(10, rb5x5, rb11x11, rb17x17,startButton, turnLabel, redMovesLabel, blueMovesLabel);
+        HBox sizeOptions = new HBox(10, rb5x5, rb11x11, rb17x17,resetButton, turnLabel, redMovesLabel, blueMovesLabel);
         sizeOptions.setPadding(new Insets(10));
         root = new BorderPane(); // root'u burada initialize edin
         root.setBottom(sizeOptions);
@@ -54,7 +54,7 @@ public class GameApplication {
 
         Stage newStage = new Stage();
         newStage.setTitle("HexGame v0.1");
-        Scene scene = new Scene(root, 1500, 1000);
+        Scene scene = new Scene(root, 1500, 900);
         newStage.setScene(scene);
         newStage.show();
     }
@@ -62,7 +62,7 @@ public class GameApplication {
     public void createGame(int boardSize) {
         gameModel = new GameModel(boardSize);
         boardView = new BoardView(gameModel);
-        gameController = new HexController(gameModel, boardView,turnLabel, redMovesLabel, blueMovesLabel);
+        gameController = new GameController(gameModel, boardView,turnLabel, redMovesLabel, blueMovesLabel);
 
         // Yeni boardView'ı ekleyin veya güncelleyin
         if (root.getCenter() == null) {

@@ -70,7 +70,7 @@ public class GameModel {
         // Komşu hücreleri kontrol et (6 yön)
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
-                if (i == 0 && j == 0 || // Aynı hücreyi kontrol etme
+                if (i == 0 && j == 0 || i==-1 && j==-1 || i==1 && j==1 || // Aynı hücreyi ve sisteme dahil olmayan sınırları kontrol etme
                         row + i < 0 || row + i >= boardSize || col + j < 0 || col + j >= boardSize || // Sınır kontrolü
                         board[row + i][col + j].getOwner() != player || // Farklı oyuncuya ait hücre
                         board[row + i][col + j].isVisited()) { // Zaten ziyaret edilmiş hücre
